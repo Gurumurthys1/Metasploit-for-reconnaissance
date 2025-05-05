@@ -1,9 +1,13 @@
-# Metasploit
+# Metasploit-for-reconnaissance
+## Metasploit
 Metasploit for reconnaissance in pentesting
 
-# AIM:
+## AIM:
 
 To get introduced to Metasploit Framework and to  perform reconnaissance  in pentesting .
+
+### BY: HARI PRASATH. P
+### REG. NO: 212223230070
 
 ## DESIGN STEPS:
 
@@ -19,79 +23,89 @@ Investigate on the various categories of tools as follows:
 
 Open terminal and try execute some kali linux commands
 
-## EXECUTION STEPS AND ITS OUTPUT:
-
-### Step1:Identify the Attacker’s IP Address
-Determine the IP address of the attacker's system.
-![Screenshot 2025-04-11 061101](https://github.com/user-attachments/assets/0322259a-0d67-435d-a23f-1a064b180102)
-
-
-### Step2:Launch the Metasploit Console
-Invoke the **msfconsole**.
-![Screenshot 2025-04-11 061335](https://github.com/user-attachments/assets/da3a8e4f-2e14-433e-a42a-0bfaf5dbcb55)
+### EXECUTION STEPS AND ITS OUTPUT:
+Find out the ip address of the attackers system
+#### OUTPUT:
+![image](https://github.com/user-attachments/assets/b9703284-6b8f-46e3-afac-9ab1d0c31e86)
 
 
-
-To view available commands, enter **"?"**.
-![image](https://github.com/user-attachments/assets/82414691-fe15-474e-a768-c3c19e2719f8)
-
-
-### Step3:Generate Payload Using msfvenom
-
-Execute the following command to generate a Windows Meterpreter reverse shell payload.
-![Screenshot 2025-04-11 062300](https://github.com/user-attachments/assets/503c77b1-743f-4aef-b804-c5bcc08b2d57)
+Invoke msfconsole:
+![image](https://github.com/user-attachments/assets/5f1bfa0e-4cbf-4a74-8680-7d96bba8f87e)
 
 
-### Step4:Set Up an HTTP Server
-Once the payload file is created, navigate to the home directory.
-Right-click and select **"open terminal here"**.
-![image](https://github.com/user-attachments/assets/42e1fa87-7501-47ec-ba81-4c4b7e3a263d)
+Type help or a question mark "?" to see the list of all available commands you can use inside msfconsole.
+
+![image](https://github.com/user-attachments/assets/772ef2b2-9340-484a-8f74-3059357b4952)
 
 
+#### Port Scanning:
+Following command is executed for scanning the systems on our local area network with a TCP scan (-sT) looking for open ports between 1 and 1000 (-p1-1000).
+msf >  nmap -sT 192.168.1810/24 -p1-1000
+#### OUTPUT:
+![image](https://github.com/user-attachments/assets/598bcf5c-a3ad-474d-bbef-edf8d72990f5)
+
+step4:
+use the db-nmap command to scan and save the results into Metasploit's postgresql attached database. In that way, you can use those results in the exploitation stage later.
+
+scan the targets with the command db_nmap as follows.
+msf > db_nmap 192.168.181.0/24
+#### OUTPUT:
+![image](https://github.com/user-attachments/assets/6c8eb0a5-23d6-4eb3-b2e3-9731bfa9fa67)
 
 
-Run the Python command to establish an HTTP server for file distribution.
-![Screenshot 2025-04-11 062640](https://github.com/user-attachments/assets/6180fd69-5f76-4db8-92e6-12d0905d5baf)
+Metasploit has a multitude of scanning modules built in. If we open another terminal, we can navigate to Metasploit's auxiliary modules and list all the scanner modules.
+cd /usr/share /metasploit-framework/modules/auxiliary
+kali > ls -l
+#### OUTPUT:
+![image](https://github.com/user-attachments/assets/b7fae978-cd19-4bf9-909a-4b1bb675325c)
 
 
-### Step5:Distribute the Payload
-Share the .exe file with the target system via any medium or the HTTP server.
+Search is a powerful command in Metasploit that you can use to find what you want to locate. 
+msf >search name:Microsoft type:exploit
 
-Once the victim downloads and executes the file, the exploit is triggered.
-
-**VICTIM DEVICE:**
-![image](https://github.com/user-attachments/assets/f1367f96-a535-4f37-913d-905b943a104a)
-
-![image](https://github.com/user-attachments/assets/06791d66-20f3-424a-9518-bcf6c7778242)
+The info command provides information regarding a module or platform,
+#### OUTPUT
+![image](https://github.com/user-attachments/assets/fad6d941-f0b2-4858-9df5-3ea49880600a)
 
 
-### Step6:Establish a Connection
-On Kali Linux, reopen the terminal and invoke **"msfconsole"**.
-Follow the necessary steps to establish a connection with the victim’s device.
-![image](https://github.com/user-attachments/assets/772a8153-000e-4a06-b24d-b9c3d804b50a)
+Before beginning, set up the Metasploit database by starting the PostgreSQL server and initialize msfconsole database as follows:
+systemctl start postgresql
+msfdb init
+#### MYSQL ENUMERATION
+Find the IP address of the Metasploitable machine first. Then, use the db_nmap command in msfconsole with Nmap flags to scan the MySQL database at 3306 port.
+db_nmap -sV -sC -p 3306 <metasploitable_ip_address>
+![image](https://github.com/user-attachments/assets/00f5d101-b106-4260-90fe-9c48af3bf1f2)
 
 
-Once exploited, a session is created, allowing remote access without the victim’s awareness.
-
-### Step7:List commands
-Use the help command to list available operations.
-![image](https://github.com/user-attachments/assets/cbaff802-7245-4504-b28a-b160ef69bd50)
+Use the search option to look for an auxiliary module to scan and enumerate the MySQL database.
+search type:auxiliary mysql
+![image](https://github.com/user-attachments/assets/7b606c3d-c7c2-4cc0-8da0-dc3493b32dd8)
 
 
-
-### Step8:
-For example, the **"screenshot"** command captures the victim’s screen and saves it in the attacker's home directory.
-
-![image](https://github.com/user-attachments/assets/64cca92a-3e49-41aa-96f9-2e90fcc4f910)
-
-
-![WhatsApp Image 2025-04-07 at 11 03 10_cd03e798](https://github.com/user-attachments/assets/b2bd93b8-20cc-4105-8bda-09e37e51533c)
+use the auxiliary/scanner/mysql/mysql_version module by typing the module name or associated number to scan MySQL version details.
+use 11 Or: use auxiliary/scanner/mysql/mysql_version
+![image](https://github.com/user-attachments/assets/c272702f-85fa-4797-9259-1b04298e48ec)
 
 
 
+Use the set rhosts command to set the parameter and run the module, as follows:
+![image](https://github.com/user-attachments/assets/7cb2df0e-aebd-454e-a992-5b6b8de362a9)
 
-### Step9:Terminate the Connection
-After completing the intended operations, close the session securely.
 
-#### RESULT:
+
+After scanning, you can also brute force MySQL root account via Metasploit's auxiliary(scanner/mysql/mysql_login) module.
+![image](https://github.com/user-attachments/assets/6d98cae1-206d-40e2-a5d9-e33b68e1f48a)
+
+
+set the PASS_FILE parameter to the wordlist path available inside /usr/share/wordlists:
+set PASS_FILE /usr/share/wordlistss/rockyou.txt
+Then, specify the IP address of the target machine with the RHOSTS command.
+set RHOSTS <metasploitable-ip-address>
+Set BLANK_PASSWORDS to true in case there is no password set for the root account.
+set BLANK_PASSWORDS true
+![image](https://github.com/user-attachments/assets/4618a435-9885-45ed-8a5e-362bedc1f987)
+
+
+
+## RESULT:
 The Metasploit framework for reconnaissance is  examined successfully.
